@@ -1,27 +1,19 @@
 from fastapi import FastAPI
-from contextlib import asynccontextmanager
 
 from app.db.database import init_db
 from app.api.property.routes import router as properties_router
 
 
-# Initialize database on startup
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    # Startup
-    init_db()
-    yield
-    # Shutdown
-    pass
+
+#setup db
+init_db()
 
 
-app = FastAPI(lifespan=lifespan)
+app = FastAPI(title="test-app")
 
+#register routes
 app.include_router(properties_router)
 
 
-@app.get("/")
-async def root():
-    return {"message": "Zero Deposit: Property Management"}
 
 

@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 from typing import Optional
 from datetime import datetime
 
@@ -13,6 +13,9 @@ class PropertyCreate(BaseModel):
 
 
 class PropertyResponse(BaseModel):
+
+    #tells Pydantic to read data from object attributes instead of requiring a dictionary.
+    model_config = ConfigDict(from_attributes=True)
     
     id: int = Field(..., description="Property unique ID")
     address: str = Field(..., description="Property address")
@@ -20,12 +23,13 @@ class PropertyResponse(BaseModel):
     city: str = Field(..., description="City name")
     rooms: int = Field(..., description="Number of rooms")
     created_by: str = Field(..., description="User who created the property")
-    
-    class Config:
-        orm_mode = True  
+
+
 
 
 class PropertyList(BaseModel):
+
+    model_config = ConfigDict(from_attributes=True)
     
     id: int
     address: str
@@ -34,5 +38,3 @@ class PropertyList(BaseModel):
     rooms: int
     created_by: str
     
-    class Config:
-        orm_mode = True

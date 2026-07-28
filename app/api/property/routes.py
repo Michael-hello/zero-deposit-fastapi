@@ -62,9 +62,9 @@ async def create_property(
     authorization: Optional[str] = Header(None),
 ):
     
-    user_id = get_user_from_token(authorization)
+    user_name = 'Bob' #get_user_from_token(authorization)
     
-    db_property = service.create(property_data=property_data, user_id=user_id)
+    db_property = service.create(property_data=property_data, user_name=user_name)
     return db_property
 
 

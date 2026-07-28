@@ -20,7 +20,7 @@ class PropertyService:
           
 
     #data is prevalidated by pydantic schema. 
-    def create(self, data: PropertyCreate, user_id: str) -> Property:
+    def create(self, data: PropertyCreate, user_name: str) -> Property:
 
         ##TO DO: add validation e.g. SQL injection, XSS etc
         db_property = Property(
@@ -28,7 +28,7 @@ class PropertyService:
             postcode=data.postcode,
             city=data.city,
             rooms=data.rooms,
-            created_by=user_id,
+            created_by=user_name,
         )
         
         self._db.add(db_property)

@@ -14,19 +14,20 @@ class PropertyService:
         return self._db.query(Property).all()
 
     
-    def get_by_id(self, property_id: int) -> Property:
+    def get_by_id(self, id: int) -> Property:
        
-        return self._db.query(Property).filter(Property.id == property_id).first()
+        return self._db.query(Property).filter(Property.id == id).first()
           
-    
-    def create(self, property_data: PropertyCreate, user_id: str) -> Property:
 
-        ##TO DO: add validation
+    #data is prevalidated by pydantic schema. 
+    def create(self, data: PropertyCreate, user_id: str) -> Property:
+
+        ##TO DO: add validation e.g. SQL injection, XSS etc
         db_property = Property(
-            address=property_data.address,
-            postcode=property_data.postcode,
-            city=property_data.city,
-            rooms=property_data.rooms,
+            address=data.address,
+            postcode=data.postcode,
+            city=data.city,
+            rooms=data.rooms,
             created_by=user_id,
         )
         
@@ -37,12 +38,12 @@ class PropertyService:
         return db_property
 
     
-    def delete(self, property_id: int) -> bool:
+    def delete(self, id: int) -> bool:
 
-        property_obj = self._db.query(Property).filter(Property.id == property_id).first()
+        property = self._db.query(Property).filter(Property.id == id).first()
         
-        if property_obj:       
-            self._db.delete(property_obj)
+        if property:       
+            self._db.delete(property)
             self._db.commit()
 
-        return property_obj is not None
+        return property is not None

@@ -2,7 +2,8 @@ from pydantic import BaseModel, Field
 from typing import Optional
 from datetime import datetime
 
-
+# Data validation handled by pydantic and 
+# automatically handled by fastapi if fails validation, returns a 422  
 class PropertyCreate(BaseModel):
   
     address: str = Field(..., min_length=1, max_length=500, description="Property address")

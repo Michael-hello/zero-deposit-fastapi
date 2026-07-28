@@ -17,5 +17,5 @@ Base = declarative_base()
 
 
 def init_db():
-    """Initialize database by creating all tables."""
+    #Initialize database by automatically creating all tables if necessary
     Base.metadata.create_all(bind=engine)

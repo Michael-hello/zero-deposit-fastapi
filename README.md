@@ -8,6 +8,11 @@ uv is used to handle project dependencies and python versioning, must be install
 
 the above command will install all dependencies and run the app in development.
 
+# pytest tests/ -v
+
+the above command will run all tests in the tests directory
+
+
 
 Framework choices:
 -Fastapi: lightweight & easily configurable API. Existing knowledge.

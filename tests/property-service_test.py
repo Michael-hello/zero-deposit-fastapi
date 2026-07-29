@@ -8,7 +8,7 @@ from tests.helpers import init_test_db
 def test_create():
     """Test PropertyService.create """
     
-    mock_session = init_test_db()  
+    mock_session = init_test_db(inMemory=True)
     service = PropertyService(session=mock_session)
     
     property_data = PropertyCreate(

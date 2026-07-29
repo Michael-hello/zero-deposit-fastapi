@@ -7,7 +7,7 @@ from app.main import app
 from app.db.database import Base
 from tests.helpers import init_test_db
 
-testSession = init_test_db()
+testSession = init_test_db(inMemory=False)
 client = TestClient(app)
 
 # override dependency in the main app

@@ -36,8 +36,8 @@ class UserService:
         return db_user
 
 
-    def get_user(self, db: Session, username: str):
-        return db.query(User).filter(User.username == username).first()
+    def get_user(self, username: str) -> User:
+        return self._db.query(User).filter(User.username == username).first()
 
     def login(self, user: UserLoginRequest) -> User:
         db_user = self.authenticate_user(user.username, user.password)
@@ -46,7 +46,7 @@ class UserService:
 
 
     def authenticate_user(self, username: str, password: str) -> User:
-        user = self.get_user(self._db, username)
+        user = self.get_user(username)
 
         if not user or not verify_password(password, user.hashed_password):
              raise HTTPException(

@@ -1,10 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException, status, Header
-from sqlalchemy.orm import Session
 from typing import List, Optional
 
+from app.api.auth.service import UserService
 from app.api.property.service import PropertyService
 from app.db.database import SessionLocal
-from app.api.property.model import Property
 from app.api.property.schema import PropertyCreate, PropertyResponse, PropertyList
 from app.auth.jwt import get_user_from_token
 
@@ -19,19 +18,36 @@ router = APIRouter(
 def get_property_service() -> PropertyService:
     return PropertyService(session=SessionLocal())
 
-
+def get_user_service() -> "UserService":
+    return UserService(session=SessionLocal())
 
 
 #List all properties in the database.
 @router.get("", response_model=List[PropertyList])
 async def list_properties(
-    service: PropertyService = Depends(get_property_service),
+    propertyService: PropertyService = Depends(get_property_service),
+    userService: UserService = Depends(get_user_service),
     authorization: Optional[str] = Header(None),
 ):
 
-    get_user_from_token(authorization)
+    user_id = get_user_from_token(authorization)
+
+    user = userService.get_user(username=user_id)
+
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="User not found",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+
+    if user.role != "admin":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="You do not have permission to access this resource",
+        )
     
-    properties = service.list()
+    properties = propertyService.list()
     return properties
 
 
@@ -43,7 +59,7 @@ async def get_property(
     authorization: Optional[str] = Header(None),
 ):
 
-    #get_user_from_token(authorization)
+    get_user_from_token(authorization)
     
     property_obj = service.get_by_id(property_id)
     
@@ -64,7 +80,7 @@ async def create_property(
     authorization: Optional[str] = Header(None),
 ):
     
-    user_name = 'Bob' #get_user_from_token(authorization)
+    user_name = get_user_from_token(authorization)
     
     db_property = service.create(data=property_data, user_name=user_name)
     return db_property
@@ -78,7 +94,7 @@ async def delete_property(
     authorization: Optional[str] = Header(None),
 ):
     
-    #get_user_from_token(authorization)
+    get_user_from_token(authorization)
     
     deleted = service.delete(property_id=property_id)
     

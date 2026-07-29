@@ -37,6 +37,7 @@ async def login_user(
 
     user = service.login(login_request)
     
-    token = create_access_token(data={"sub": user.username})
+    token = create_access_token(username=user.username)
+    
     return UserLoginResponse(access_token=token)
     

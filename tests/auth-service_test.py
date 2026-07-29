@@ -18,7 +18,7 @@ def test_create():
     )
 
     _user = service.create(user_create)
-    created_user = service.get_user(mock_session, _user.username)
+    created_user = service.get_user(_user.username)
 
     assert created_user.username == "mike"
 

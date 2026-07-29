@@ -39,6 +39,7 @@ class UserService:
     def get_user(self, username: str) -> User:
         return self._db.query(User).filter(User.username == username).first()
 
+
     def login(self, user: UserLoginRequest) -> User:
         db_user = self.authenticate_user(user.username, user.password)
            

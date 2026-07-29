@@ -27,7 +27,7 @@ async def list_properties(
     authorization: Optional[str] = Header(None),
 ):
    
-    get_user_from_token(authorization)
+    #get_user_from_token(authorization)
     
     properties = service.list()
     return properties
@@ -41,7 +41,7 @@ async def get_property(
     authorization: Optional[str] = Header(None),
 ):
 
-    get_user_from_token(authorization)
+    #get_user_from_token(authorization)
     
     property_obj = service.get_by_id(property_id)
     
@@ -64,7 +64,7 @@ async def create_property(
     
     user_name = 'Bob' #get_user_from_token(authorization)
     
-    db_property = service.create(property_data=property_data, user_name=user_name)
+    db_property = service.create(data=property_data, user_name=user_name)
     return db_property
 
 
@@ -76,7 +76,7 @@ async def delete_property(
     authorization: Optional[str] = Header(None),
 ):
     
-    get_user_from_token(authorization)
+    #get_user_from_token(authorization)
     
     deleted = service.delete(property_id=property_id)
     

@@ -3,8 +3,7 @@ from typing import Optional
 import jwt
 import os
 
-# For development, use a default. In production, read from environment
-JWT_SECRET = os.getenv("JWT_SECRET", "your-secret-key-change-in-production")
+JWT_SECRET = os.getenv("JWT_SECRET", "secret-key")
 JWT_ALGORITHM = "HS256"
 
 

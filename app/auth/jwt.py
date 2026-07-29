@@ -1,13 +1,27 @@
+from datetime import datetime, timedelta, timezone
+
 from dotenv import load_dotenv
 from fastapi import HTTPException, status
 from typing import Optional
 import jwt
 import os
 
+
+
 load_dotenv()
 
-JWT_SECRET = os.getenv("JWT_SECRET", "secret-key")
+JWT_SECRET = os.getenv("JWT_SECRET", "jwt-secret-key")
 JWT_ALGORITHM = "HS256"
+ACCESS_TOKEN_EXPIRE_MINUTES = 30
+
+
+
+def create_access_token(data: dict):
+    to_encode = data.copy()
+    expire = datetime.now(timezone.utc) + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    to_encode.update({"exp": expire})
+    encoded_jwt = jwt.encode(to_encode, JWT_SECRET, algorithm=JWT_ALGORITHM)
+    return encoded_jwt
 
 
 def get_user_from_token(authorization: Optional[str]) -> str:
@@ -58,3 +72,4 @@ def get_user_from_token(authorization: Optional[str]) -> str:
             detail="Invalid or expired token",
             headers={"WWW-Authenticate": "Bearer"},
         )
+

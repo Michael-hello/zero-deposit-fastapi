@@ -20,14 +20,16 @@ def get_property_service() -> PropertyService:
     return PropertyService(session=SessionLocal())
 
 
+
+
 #List all properties in the database.
 @router.get("", response_model=List[PropertyList])
 async def list_properties(
     service: PropertyService = Depends(get_property_service),
     authorization: Optional[str] = Header(None),
 ):
-   
-    #get_user_from_token(authorization)
+
+    get_user_from_token(authorization)
     
     properties = service.list()
     return properties

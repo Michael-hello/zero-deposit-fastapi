@@ -1,8 +1,9 @@
-import jwt
+
 from fastapi.testclient import TestClient
 from app.api.property.routes import get_property_service
 from app.api.property.service import PropertyService
 
+from app.auth.jwt import create_access_token
 from app.main import app
 from app.db.database import Base
 from tests.helpers import init_test_db
@@ -47,6 +48,11 @@ def test_list_properties():
     """Test listing all properties"""
     cleanup_database()
     
+    # Create a JWT token for authorization
+    token = create_access_token(data={"sub": "testuser"})
+    headers = {"Authorization": f"Bearer {token}"}
+
+    
     # Create two properties with different users
     for i in range(2):
         property_data = {
@@ -55,9 +61,9 @@ def test_list_properties():
             "city": "London",
             "rooms": i + 1,
         }
-        client.post("/api/v1/properties", json=property_data)
+        client.post("/api/v1/properties", json=property_data, headers=headers)
     
-    response = client.get("/api/v1/properties")
+    response = client.get("/api/v1/properties", headers=headers)
     
     assert response.status_code == 200
     data = response.json()

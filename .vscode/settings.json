@@ -1,0 +1,8 @@
+{
+  "files.exclude": {
+    "**/*.db-shm": true,
+    "**/*.db-wal": true,
+    "**/__init__.py": true,
+    "**/__pycache__": true
+  }
+}

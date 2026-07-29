@@ -11,4 +11,5 @@ dependencies = [
     "sqlalchemy>=2.0.51",
     "pyjwt>=2.8.0",
     "alembic>=1.18.5",
+    "pwdlib[argon2]>=0.3.0",
 ]

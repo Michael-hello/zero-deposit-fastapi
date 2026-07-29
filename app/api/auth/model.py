@@ -1,6 +1,5 @@
-from sqlalchemy import Column, Integer, String, DateTime, func
+from sqlalchemy import CheckConstraint, Column, Integer, String
 from app.db.database import Base
-from datetime import datetime
 
 
 class User(Base):
@@ -9,10 +8,13 @@ class User(Base):
     
     id = Column(Integer, primary_key=True, index=True)
     
-    name = Column(String(200), nullable=False, index=True)
     username = Column(String(200), nullable=False, index=True)
-    role = Column(String(20), nullable=False, index=True)
     hashed_password = Column(String(200), nullable=False)
  
+    role = Column(String(20), nullable=False, index=True)
     
-   
+    __table_args__ = (
+        CheckConstraint("role IN ('admin', 'standard')"),
+    )
+
+

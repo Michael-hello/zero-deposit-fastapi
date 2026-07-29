@@ -1,3 +1,4 @@
+import bleach
 from fastapi import HTTPException
 from fastapi import status
 from sqlalchemy.orm import Session
@@ -24,8 +25,8 @@ class UserService:
         hashed_password = hash_password(user.password)
         
         db_user = User(
-            username=user.username,
-            hashed_password=hashed_password,
+            username=_sanitize_input(user.username),
+            hashed_password=_sanitize_input(hashed_password),
             role="standard",
         )
 
@@ -57,3 +58,9 @@ class UserService:
             )
         
         return user
+
+
+
+def _sanitize_input(value: str) -> str:
+    # Remove all HTML tags, only allow text
+    return bleach.clean(value, tags=[], strip=True)

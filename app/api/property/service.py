@@ -2,6 +2,7 @@ from sqlalchemy.orm import Session
 from fastapi import HTTPException, status
 from app.api.property.model import Property
 from app.api.property.schema import PropertyCreate
+import bleach
 
 
 class PropertyService:
@@ -22,13 +23,14 @@ class PropertyService:
     #data is prevalidated by pydantic schema. 
     def create(self, data: PropertyCreate, user_name: str) -> Property:
 
-        ##TO DO: add validation e.g. SQL injection, XSS etc
+        #SQL injecion is mitigated by using SQLAlchemy, which uses parameterized queries.
+        ##TO DO: add validation against XSS 
         db_property = Property(
-            address=data.address,
-            postcode=data.postcode,
-            city=data.city,
+            address=_sanitize_input(data.address),
+            postcode=_sanitize_input(data.postcode),
+            city=_sanitize_input(data.city),
             rooms=data.rooms,
-            created_by=user_name,
+            created_by=_sanitize_input(user_name),
         )
         
         self._db.add(db_property)
@@ -47,3 +49,8 @@ class PropertyService:
             self._db.commit()
 
         return property is not None
+
+
+def _sanitize_input(value: str) -> str:
+    # Remove all HTML tags, only allow text
+    return bleach.clean(value, tags=[], strip=True)

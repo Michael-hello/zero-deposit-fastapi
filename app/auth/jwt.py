@@ -1,7 +1,10 @@
+from dotenv import load_dotenv
 from fastapi import HTTPException, status
 from typing import Optional
 import jwt
 import os
+
+load_dotenv()
 
 JWT_SECRET = os.getenv("JWT_SECRET", "secret-key")
 JWT_ALGORITHM = "HS256"

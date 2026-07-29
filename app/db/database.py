@@ -1,8 +1,14 @@
+import os
+
+from dotenv import load_dotenv
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base, sessionmaker
 from typing import Generator
 
-DATABASE_URL = "sqlite:///./dev.db"
+load_dotenv()  
+
+
+DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./dev2.db")
 
 engine = create_engine(
     DATABASE_URL,

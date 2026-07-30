@@ -41,7 +41,7 @@ async def list_properties(
             headers={"WWW-Authenticate": "Bearer"},
         )
 
-    if user.role != "admin":
+    if user.role != "standard" and user.role != "admin":
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="You do not have permission to access this resource",

@@ -11,4 +11,5 @@ dependencies = [
     "sqlalchemy>=2.0.51",
     "pwdlib[argon2]>=0.3.0",
     "bleach>=6.4.0",
+    "pyjwt>=2.13.0",
 ]

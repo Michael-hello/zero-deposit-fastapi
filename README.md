@@ -22,6 +22,7 @@ Framework choices:
 -pytest: industry standard python testing library
 -pwdlib: password hashing
 -bleach: data sanitisation against XSS through hmtl tag removal 
+-pyjwt: JWT encoding and decoding
 
 
 AI use: GitHub Copilot Pro
